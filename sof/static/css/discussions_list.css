@@ -1,0 +1,82 @@
+.content {
+  max-width: 70%;
+  margin: 2% auto;
+  border-radius: 10px;
+  -webkit-box-shadow: 0px 5px 29px 2px rgba(34, 60, 80, 0.2);
+  box-shadow: 0px 5px 29px 2px rgba(34, 60, 80, 0.2);
+  font-family: system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Liberation Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+}
+
+.content .content-header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  border-bottom: 1px solid #e3e6e8;
+  margin-bottom: 8px;
+  padding: 15px 8px;
+}
+
+.content .content-header .content-header-title {
+  font-size: 27px;
+  color: #3b4045;
+}
+
+.content .content-header .content-header-ask-question {
+  margin: auto 0px;
+}
+
+.content .discussions-list .discussion {
+  border-bottom: 1px solid #e3e6e8;
+  padding: 12px 8px;
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 30% 70%;
+      grid-template-columns: 30% 70%;
+}
+
+.content .discussions-list .discussion .discussion-statistics {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  justify-self: center;
+}
+
+.content .discussions-list .discussion .discussion-statistics .discussion-statistics-item {
+  padding: 6px;
+}
+
+.content .discussions-list .discussion .discussion-statistics .discussion-statistics-item .discussion-statistics-count {
+  text-align: center;
+}
+
+.content .discussions-list .discussion .discussion-statistics .discussion-statistics-item .discussion-statistics-title {
+  text-align: center;
+}
+
+.content .discussions-list .discussion .discussion-details .discussion-details-title {
+  margin-bottom: 5.25px;
+}
+
+.content .discussions-list .discussion .discussion-details .discussion-details-info {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.datetime {
+  font-size: 12px;
+  margin: auto 0px;
+  padding: auto 0px;
+}
+
+.user-link {
+  text-decoration: none;
+  font-size: 13px;
+}
+/*# sourceMappingURL=discussions_list.css.map */

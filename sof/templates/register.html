@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    <title>Register</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login_register.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="form-content">
+	<form class="login-form" action="/register" method="POST">
+		<h5 class="form-title">Registration</h5>
+
+		<div class="errors">
+			{% if email_error %}
+				<p class="error-title">This email is already registered</p>
+			{% endif %}
+			
+			{% if password_error %}
+				<p class="error-title">Password should contain:</p>
+				<ul class="error-list">
+					<li>more than 8 symbols</li>
+					<li>at least 1 capital letter</li>
+					<li>at least 2 numbers</li>
+				</ul>
+			{% endif %}
+
+			{% if nickname_validation_error %}
+				<p class="error-title">Nickname should contain:</p>
+				<ul class="error-list">
+					<li>at least 3 symbols</li>
+					<li>at least 1 letter</li>
+				</ul>
+			{% endif %}
+
+			{% if nickname_exists_error %}
+				<p class="error-title">This nickname is already registered</p>
+			{% endif %}
+		</div>
+		
+		<div class="mb-3">
+			<label class="form-label">Nickname</label>
+			<input
+				type="text"
+				class="form-control"
+				name="nickname"
+				value="{{ default_nickname }}"
+			/>
+		</div>
+
+		<div class="mb-3">
+			<label class="form-label">Email address</label>
+			<input
+				type="email"
+				class="form-control"
+				name="email"
+				value="{{ default_email }}"
+			/>
+		</div>
+
+		<div class="mb-3">
+			<label for="exampleInputPassword1" class="form-label">Password</label>
+			<input type="password" class="form-control" name="password" value="{{ default_password }}"/>
+		</div>
+
+		<div class="mb-3 form-check">
+
+			{% if default_remember %}
+			<input type="checkbox" class="form-check-input" name='remember' checked/>
+			{% else %}
+			<input type="checkbox" class="form-check-input" name='remember'/>
+			{% endif %}
+
+			<label class="form-check-label">Remember me</label>
+		</div>
+		<button type="submit" class="btn btn-primary">Sign up</button>
+	</form>
+</div>
+{% endblock %}

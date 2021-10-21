@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="content">
+	<form class="login-form" action="/login" method="POST">
+		<h5 class="form-title">Ask question</h5>
+
+		<div class="errors">
+            {% if login_error %}
+                <p class="error-title">Login or password is wrong</p>
+            {% endif %}
+		</div>
+
+
+		<div class="mb-3">
+			<label class="form-label">Title</label>
+			<input
+				type="text"
+				class="form-control"
+				name="title"
+				value="{{ default_title }}"
+			/>
+		</div>
+
+		<div class="mb-3">
+			<label class="form-label">Body</label>
+			<input
+				type="text"
+				class="form-control"
+				name="body"
+				value="{{ default_body}}"
+			/>
+		</div>
+
+		<button type="submit" class="btn btn-primary">Review your question</button>
+	</form>
+</div>
+
+{% endblock %}
+

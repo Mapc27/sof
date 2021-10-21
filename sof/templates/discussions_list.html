@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+    <title>Questions</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/discussions_list.css') }}">
+{% endblock %}
+
+
+{% block content %}
+    <div class="content">
+        <div class="content-header">
+            <div class="content-header-title">
+                Questions
+            </div>
+            <div class="content-header-ask-question">
+                <a href="{{url_for('views.new_question')}}" class="btn btn-primary">Ask Question</a>
+            </div>
+        </div>
+        <div class="discussions-list">
+            {% for discussion in discussions %}
+                <div class="discussion">
+                    <div class="discussion-statistics">
+                        <div class="discussion-statistics-item">
+                            <div class="discussion-statistics-count">
+                                {{discussion.grade}}
+                            </div>
+                            <div class="discussion-statistics-title">
+                                votes
+                            </div>
+                        </div>
+                        <div class="discussion-statistics-item">
+                            <div class="discussion-statistics-count">
+                                {{discussion.answers | count}}
+                            </div>
+                            <div class="discussion-statistics-title">
+                                answers
+                            </div>
+                        </div>
+                        <div class="discussion-statistics-item">
+                            <div class="discussion-statistics-count">
+                                0
+                            </div>
+                            <div class="discussion-statistics-title">
+                                views
+                            </div>
+                        </div>
+                    </div>
+                    <div class="discussion-details">
+                        <h3 class="discussion-details-title">
+                            {{discussion.title}}
+                        </h3>
+                        <div class="discussion-details-info">
+                            <div class="discussion-details-tags">
+                                {% for tag in discussion.tags %}
+                                    <a class="tag" href="">
+                                        {{tag.title}}
+                                    </a>
+                                {% endfor %}
+                            </div>
+                            
+                            <div class="discussion-details-user">
+                                <a href="{{url_for('views.view_user', user_id=discussion.user.id)}}" class="user-link">{{discussion.user.nickname}}</a>
+                                asked {{discussion.created_at.strftime('%d.%m.%Y %H:%M')}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    <title>Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login_register.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="form-content">
+	<form class="login-form" action="/login" method="POST">
+		<h5 class="form-title">Login</h5>
+
+		<div class="errors">
+					{% if login_error %}
+		<p class="error-title">Login or password is wrong</p>
+		{% endif %}
+		</div>
+
+
+		<div class="mb-3">
+			<label class="form-label">Email address</label>
+			<input
+				type="email"
+				class="form-control"
+				name="email"
+				value="{{ default_email }}"
+			/>
+		</div>
+		<div class="mb-3">
+			<label class="form-label">Password</label>
+			<input
+				type="password"
+				class="form-control"
+				name="password"
+				value="{{ default_password }}"
+			/>
+		</div>
+		<div class="mb-3 form-check">
+
+			{% if default_remember %}
+			<input type="checkbox" class="form-check-input" name='remember' checked/>
+			{% else %}
+			<input type="checkbox" class="form-check-input" name='remember'/>
+			{% endif %}
+			
+			<label class="form-check-label">Remember me</label>
+		</div>
+		<button type="submit" class="btn btn-primary">Login</button>
+	</form>
+</div>
+
+{% endblock %}
