@@ -82,7 +82,7 @@ class Discussion(db.Model):
 
     def __repr__(self):
         return "<Discussion(id='%s', title='%s', answers='%s', commentaries='%s')>" %\
-               (self.id, self.title, self.answer, self.commentary)
+               (self.id, self.title, self.answers, self.commentaries)
 
 
 class Tag(db.Model):
@@ -122,7 +122,7 @@ class Answer(db.Model):
 
     def __repr__(self):
         return "<Answer(id='%s', discussion_id='%s', user_id='%s', commentaries='%s')>" %\
-               (self.id, self.discussion_id, self.user_id, self.commentary)
+               (self.id, self.discussion_id, self.user_id, self.commentaries)
 
 
 class Commentary(db.Model):

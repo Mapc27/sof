@@ -1,31 +1,17 @@
 from flask import render_template, request, redirect, url_for, session, Blueprint
 from flask_login import login_user, logout_user
-from werkzeug.security import generate_password_hash
 
 from .models import User
-from .services import password_validation, try_login, nickname_validation
-from sof import db
+from .services import password_validation, try_login, nickname_validation, clear_session, create_user
 
 
 auth = Blueprint('auth', __name__)
 
 
-def clear_session():
-    session['user'] = {}
-    session['user']['id'] = False
-    session['user']['is_logged'] = False
-    session['user']['email'] = None
-    session['user']['nickname'] = None
-    session['user']['password'] = None
-    session['user']['remember'] = None
-    session.modified = True
-
-
 @auth.before_request
 def before_request():
-    if 'user' in session:
-        if 'is_logged' not in session['user']:
-            clear_session()
+    if 'user' not in session:
+        clear_session(session)
 
 
 def save_session_data(user, remember):
@@ -41,11 +27,18 @@ def save_session_data(user, remember):
     session.modified = True
 
 
-@auth.route('/login', methods=['GET', 'POST'])
-def login():
-    if session['is_logged']:
-        return redirect(url_for('views.index'))
+def login_decorator(func):
+    def wrapper(*args, **kwargs):
+        if session['user']['is_logged']:
+            return redirect(url_for('views.index'))
+        return func(*args, **kwargs)
+    wrapper.__name__ = func.__name__
+    return wrapper
 
+
+@auth.route('/login', methods=['GET', 'POST'])
+@login_decorator
+def login():
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
@@ -64,10 +57,8 @@ def login():
 
 
 @auth.route('/register', methods=['GET', 'POST'])
+@login_decorator
 def register():
-    if session['is_logged']:
-        return redirect(url_for('views.index'))
-
     if request.method == 'POST':
         email = request.form['email']
         nickname = request.form['nickname']
@@ -90,9 +81,7 @@ def register():
             return render_template('register.html', default_email=email, default_password=password,
                                    default_remember=remember, nickname_exists_error=True)
 
-        user = User(email=email, password=generate_password_hash(password), nickname=nickname)
-        db.session.add(user)
-        db.session.commit()
+        create_user(email, password, nickname)
 
         user = User.query.filter_by(email=email).first()
         save_session_data(user, remember)
@@ -102,6 +91,6 @@ def register():
 
 @auth.route('/logout', methods=['GET'])
 def logout():
-    clear_session()
+    clear_session(session)
     logout_user()
     return redirect(url_for('views.index'))

@@ -37,11 +37,6 @@
                     <td class="question_answer-data">
                         <div class="question_answer-text">
                             {{ discussion.text }}
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore facilis nostrum dolorem animi? Perspiciatis quia obcaecati omnis! Accusantium <br> <br>
-                            omnis est repellendus, ut in quisquam voluptatum velit reprehenderit, aut quis harum nemo cumque nam libero aspernatur tenetur distinctio! Temporibus sint in quos itaque culpa, natus eos error similique, vitae quibusdam a id illo adipisci reprehenderit quia tempore earum, <br> <br>
-                            consectetur eligendi. Explicabo dolorum ipsam dignissimos dolor deleniti eveniet sequi delectus possimus aut vero. Amet iusto unde aspernatur odio ipsum inventore sunt, recusandae debitis sint ratione vitae voluptates reprehenderit beatae nostrum tempore eius eaque nulla, quibusdam dignissimos quasi? Facilis suscipit eius, accusantium ipsa aliquid sint magnam a odit necessitatibus pariatur. Quidem, dolor cupiditate blanditiis voluptatibus natus ex vero quas architecto <br> <br>
-                            vel ducimus nisi, commodi illo voluptas veniam maiores deleniti officia saepe repellat! Earum provident possimus velit iure id iusto corporis ipsam aut. Ut quisquam libero amet, numquam quia maiores in harum velit deleniti totam iste similique voluptas minus recusandae inventore necessitatibus quod eum facilis dolore iusto. Numquam voluptatibus praesentium est, ut quas, quibusdam pariatur nemo earum corrupti accusamus dolores totam nobis perspiciatis quam iste illo quidem. Illum hic atque ad placeat maxime aspernatur dolores veritatis. Tenetur soluta, enim voluptatem quis veniam recusandae commodi magni suscipit sequi nam sint voluptas reprehenderit possimus vel odio aperiam accusamus ea rerum? Mollitia debitis unde voluptatibus laborum repudiandae provident odio, excepturi, architecto ea, voluptatum culpa soluta assumenda? Eum hic ipsam repellat id veritatis accusantium quos, officiis consequatur dignissimos ex aliquam, <br> <br>
-                            asperiores vitae culpa quia aut adipisci? Maxime autem saepe reiciendis architecto culpa vel explicabo omnis ullam mollitia placeat, ipsum, suscipit quo amet nobis consequuntur similique voluptatibus nemo. Alias repellat laborum, corrupti beatae, maxime tempora ipsum voluptatum, inventore fugiat impedit amet cupiditate porro rerum minus dolor odio sit atque voluptate vitae! At maxime, molestias amet doloribus totam expedita vero? 
                         </div>
                         
                         <div class="question_answer-author_data">
@@ -174,7 +169,7 @@
 <script>
 function add_comment(discussion=false, answer=false, discussion_id=null, answer_id=null){
     $(document).ready(function(){
-        if (discussion == true){
+        if (discussion === true){
             var text = $("#discussion" + discussion_id)[0].value;
             url_ = discussion_id + "/new_comment";
         }
@@ -206,29 +201,29 @@ function add_answer(discussion_id) {
         let data = {
             'text': text,
         }
-        if(text.lenght > 10){
-            url_ = discussion_id + '/new_answer'
-            $.ajax({ 
-                url: url_, 
-                type: "POST",
-                data: data,
-                success: function(data) {
-                    console.log(data);
-                    } 
-                });
-            } 
+        url_ = discussion_id + '/new_answer'
+        $.ajax({
+            url: url_,
+            type: "GET",
+            data: data,
+            success: function(text) {
+                console.log(text)
+            }
+            });
         }
-        
     );
 }
 
 function change_grade_(discussion=false, answer=false, discussion_id=null, answer_id=null, up=false) {
+    let url;
     if (discussion) {
-        if (up == true) url = discussion_id + '/up'
-        else url = discussion_id + '/down'
+        if (up === true) url = discussion_id + '/up'
+        else {
+            url = discussion_id + '/down';
+        }
     }
     else{
-        if (up == true) url = discussion_id + '/answer/' + answer_id + '/up'
+        if (up === true) url = discussion_id + '/answer/' + answer_id + '/up'
         else url = discussion_id + '/answer/' + answer_id + '/down'
     }
 
@@ -245,9 +240,13 @@ function change_grade_(discussion=false, answer=false, discussion_id=null, answe
 function change_grade(element, discussion=false, answer=false, discussion_id=null, answer_id=null, up=false) {
     $(document).ready(function(){
         element = element.getElementsByClassName('change_grade')[0]
-        if (element.getAttribute('pressed') == "true") {
-            if (up == false) change_grade_(discussion=discussion, answer=answer, discussion_id=discussion_id, answer_id=answer_id, up=true)
-            else change_grade_(discussion=discussion, answer=answer, discussion_id=discussion_id, answer_id=answer_id, up=false)
+        if (element.getAttribute('pressed') === "true") {
+            if (up === false) {
+                change_grade_(discussion = discussion, answer = answer, discussion_id = discussion_id, answer_id = answer_id, up = true)
+            }
+            else {
+                change_grade_(discussion = discussion, answer = answer, discussion_id = discussion_id, answer_id = answer_id, up = false)
+            }
             element.classList.remove('pressed')
 
             element.setAttribute('pressed', 'false')

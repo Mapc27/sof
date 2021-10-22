@@ -1,10 +1,17 @@
-from flask import Blueprint, render_template, session, redirect, url_for, request, Response
+from flask import Blueprint, render_template, session, redirect, url_for, request, Response, make_response
 from flask_login import login_required
 
-from sof import Discussion, Tag, db
-from sof.services import create_commentary, create_answer, change_discussion_grade_, change_answer_grade_
+from sof import Discussion, Tag
+from sof.services import create_commentary, create_answer, change_discussion_grade_, change_answer_grade_, \
+    clear_session, create_discussion
 
 views = Blueprint('views', __name__)
+
+
+@views.before_request
+def before_request():
+    if 'user' not in session:
+        clear_session(session)
 
 
 @views.route('/', methods=['GET'])
@@ -26,8 +33,8 @@ def view_discussion(discussion_id):
     return redirect(url_for('views.index'))
 
 
-@views.route('/questions/add', methods=['GET', 'POST'])
 @login_required
+@views.route('/questions/add', methods=['GET', 'POST'])
 def add_discussion():
     if request.method == 'POST':
         title = request.form['title']
@@ -40,44 +47,44 @@ def add_discussion():
     return render_template('discussion_add.html', tags=tags)
 
 
-@views.route('/questions/<int:discussion_id>/edit')
 @login_required
+@views.route('/questions/<int:discussion_id>/edit')
 def edit_discussion(user_id, discussion_id):
     pass
 
 
-@views.route('/<int:user_id>')
 @login_required
+@views.route('/<int:user_id>')
 def view_user(user_id):
     return redirect(url_for('views.index'))
 
 
-@views.route('/questions/<int:discussion_id>/new_comment', methods=['POST'])
 @login_required
+@views.route('/questions/<int:discussion_id>/new_comment', methods=['POST'])
 def add_discussion_commentary(discussion_id):
     commentary_text = request.values.get('text')
     create_commentary(commentary_text=commentary_text, discussion_id=discussion_id, user_id=session['user']['id'])
     return Response("200")
 
 
-@views.route('/questions/<int:discussion_id>/answer/<int:answer_id>/new_comment', methods=['POST'])
 @login_required
+@views.route('/questions/<int:discussion_id>/answer/<int:answer_id>/new_comment', methods=['POST'])
 def add_answer_commentary(discussion_id, answer_id):
     commentary_text = request.values.get('text')
     create_commentary(commentary_text=commentary_text, answer_id=answer_id, user_id=session['user']['id'])
     return Response("200")
 
 
-@views.route('/questions/<int:discussion_id>/new_answer', methods=['POST'])
 @login_required
+@views.route('/questions/<int:discussion_id>/new_answer', methods=['POST'])
 def add_answer(discussion_id):
     answer_text = request.values.get('text')
     create_answer(answer_text=answer_text, user_id=session['user']['id'], discussion_id=discussion_id)
     return Response("200")
 
 
-@views.route('/questions/<int:discussion_id>/<string:value>', methods=['GET'])
 @login_required
+@views.route('/questions/<int:discussion_id>/<string:value>', methods=['GET'])
 def change_discussion_grade(discussion_id, value):
     if value == 'up':
         change_discussion_grade_(discussion_id, up=True)
@@ -86,8 +93,8 @@ def change_discussion_grade(discussion_id, value):
     return Response("200")
 
 
-@views.route('/questions/<int:discussion_id>/answer/<int:answer_id>/<string:value>', methods=['GET'])
 @login_required
+@views.route('/questions/<int:discussion_id>/answer/<int:answer_id>/<string:value>', methods=['GET'])
 def change_answer_grade(discussion_id, answer_id, value):
     if value == 'up':
         change_answer_grade_(answer_id, up=True)
@@ -96,14 +103,13 @@ def change_answer_grade(discussion_id, answer_id, value):
     return Response("200")
 
 
-@views.route('/questions/new_question', methods=['GET', 'POST'])
 @login_required
-def new_question():
+@views.route('/questions/new_question', methods=['GET', 'POST'])
+def add_discussion():
     if request.method == 'POST':
         title = request.form.get('title')
         text = request.form.get('text')
         user_id = session['user']['id']
-        discussion = Discussion(title=title, text=text, user_id=user_id)
-        db.session.add(discussion)
-        db.session.commit()
+        discussion = create_discussion(title, text, user_id)
+        return redirect(url_for('views.view_discussion', discussion_id=discussion.id))
     return render_template('new_question.html')

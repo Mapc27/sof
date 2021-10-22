@@ -1,6 +1,17 @@
 from sof import db
 from .models import User, Commentary, Answer, Discussion
-from werkzeug.security import check_password_hash
+from werkzeug.security import check_password_hash, generate_password_hash
+
+
+def clear_session(session):
+    session['user'] = {}
+    session['user']['id'] = False
+    session['user']['is_logged'] = False
+    session['user']['email'] = None
+    session['user']['nickname'] = None
+    session['user']['password'] = None
+    session['user']['remember'] = None
+    session.modified = True
 
 
 def password_validation(password):
@@ -29,6 +40,27 @@ def try_login(email, password):
     return False
 
 
+def create_user(email, password, nickname):
+    user = User(email=email, password=generate_password_hash(password), nickname=nickname)
+    db.session.add(user)
+    db.session.commit()
+    return user
+
+
+def create_discussion(title, text, user_id):
+    discussion = Discussion(title=title, text=text, user_id=user_id)
+    db.session.add(discussion)
+    db.session.commit()
+    return discussion
+
+
+def create_answer(answer_text, user_id, discussion_id):
+    answer = Answer(text=answer_text, discussion_id=discussion_id, user_id=user_id)
+    db.session.add(answer)
+    db.session.commit()
+    return answer
+
+
 def create_commentary(commentary_text, user_id, discussion_id=None, answer_id=None):
     if discussion_id:
         commentary = Commentary(text=commentary_text, discussion_id=discussion_id, user_id=user_id)
@@ -36,12 +68,7 @@ def create_commentary(commentary_text, user_id, discussion_id=None, answer_id=No
         commentary = Commentary(text=commentary_text, answer_id=answer_id, user_id=user_id)
     db.session.add(commentary)
     db.session.commit()
-
-
-def create_answer(answer_text, user_id, discussion_id):
-    answer = Answer(text=answer_text, discussion_id=discussion_id, user_id=user_id)
-    db.session.add(answer)
-    db.session.commit()
+    return commentary
 
 
 def change_discussion_grade_(discussion_id, up=False):

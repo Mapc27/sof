@@ -1,4 +1,4 @@
-from sof import app
+from sof import app as flask
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    flask.run(debug=True)

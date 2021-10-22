@@ -14,7 +14,7 @@
                 Questions
             </div>
             <div class="content-header-ask-question">
-                <a href="{{url_for('views.new_question')}}" class="btn btn-primary">Ask Question</a>
+                <a href="{{url_for('views.add_discussion')}}" class="btn btn-primary">Ask Question</a>
             </div>
         </div>
         <div class="discussions-list">
@@ -48,7 +48,7 @@
                     </div>
                     <div class="discussion-details">
                         <h3 class="discussion-details-title">
-                            {{discussion.title}}
+                            <a href="{{url_for('views.discussions_list')}}{{discussion.id}}">{{discussion.title}}</a>
                         </h3>
                         <div class="discussion-details-info">
                             <div class="discussion-details-tags">
