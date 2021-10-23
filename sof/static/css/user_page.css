@@ -1,0 +1,60 @@
+.question_answer {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Liberation Sans", sans-serif;
+}
+
+.question_answer .question_answer-row {
+  padding: 16px 0px;
+  border-bottom: 1px solid #e3e6e8;
+}
+
+.question_answer .question_answer-row .question_answer-data:first-child {
+  width: 52px;
+  padding-right: 16px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+}
+
+.question_answer .question_answer-row .question_answer-data:first-child .change_grade {
+  fill: #838c95;
+  cursor: pointer;
+}
+
+.question_answer .question_answer-row .question_answer-data:first-child .pressed {
+  fill: #f48225;
+}
+
+.question_answer .question_answer-row .question_answer-data:first-child .question_answer-grade {
+  font-size: 21px;
+  text-align: center;
+  margin: 6px 0px;
+}
+
+.question_answer .question_answer-row .question_answer-data:last-child {
+  padding-right: 16px;
+}
+
+.question_answer .question_answer-row .question_answer-data:last-child .question_answer-text {
+  font-size: 15px;
+}
+
+.question_answer .question_answer-row .question_answer-data:last-child .question_answer-author_data {
+  margin-top: 16px;
+  padding: 8px 0px;
+  border-bottom: 1px solid #e3e6e8;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.question_answer .question_answer-row .question_answer-data:last-child .question_answer-author_data .question_answer-datetime {
+  margin-left: 10px;
+}
+/*# sourceMappingURL=user_page.css.map */

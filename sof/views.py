@@ -1,10 +1,12 @@
 from flask import Blueprint, render_template, session, redirect, url_for, request, Response
 from flask_login import login_required
 
-from sof import Discussion, Tag
+from sof import Discussion, User
 from sof.serializers import answer_serializer, commentary_serializer
 from sof.services import create_commentary, create_answer, change_discussion_grade_, change_answer_grade_, \
-    clear_session, create_discussion
+    clear_session, create_discussion, get_answers_by_commentaries_user_id, get_discussions_by_commentaries_user_id,\
+    get_discussions_by_answers_user_id
+
 
 views = Blueprint('views', __name__)
 
@@ -21,9 +23,21 @@ def index():
 
 
 @login_required
-@views.route('/<int:user_id>')
+@views.route('/users/<int:user_id>', methods=['GET'])
 def view_user(user_id):
-    return redirect(url_for('views.index'))
+    if request.method == 'POST':
+        pass
+    user = User.query.filter_by(id=user_id).first()
+    discussions = Discussion.query.filter_by(user_id=user_id)
+    discussions_for_user_answers = get_discussions_by_answers_user_id(user_id=user_id)
+    answers_for_user_commentaries = get_answers_by_commentaries_user_id(user_id=user_id)
+    discussions_for_user_commentaries = get_discussions_by_commentaries_user_id(user_id=user_id)
+    return render_template('user_page.html',
+                           discussions=discussions,
+                           discussions_for_user_answers=discussions_for_user_answers,
+                           answers_for_user_commentaries=answers_for_user_commentaries,
+                           discussions_for_user_commentaries=discussions_for_user_commentaries,
+                           user=user)
 
 
 @views.route('/questions/', methods=['GET'])

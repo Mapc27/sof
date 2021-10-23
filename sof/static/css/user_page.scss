@@ -1,0 +1,64 @@
+$black700: hsl(210,8%,25%);
+$grey: hsl(210,8%,55%);
+
+$border_line: 1px solid hsl(210,8%,90%);
+$pressed_color: hsl(27,90%,55%);
+
+$question_font-family: -apple-system,BlinkMacSystemFont,"Segoe UI","Liberation Sans",sans-serif;
+$question_font-size: 15px;
+$question_grade_font-size: 21px;
+$commentary_font-size: 13px;
+$datetime_font-size: 12px;
+$nickname_font-size: 13px;
+
+.question_answer{
+    font-family: $question_font-family;
+
+    .question_answer-row{
+        padding: 16px 0px;
+        border-bottom: $border_line;
+        
+        .question_answer-data:first-child{
+            width: 52px;
+            padding-right: 16px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+
+            .change_grade{
+                fill: $grey;
+                cursor: pointer;
+            }
+
+            .pressed{
+                fill: $pressed_color;
+            }
+
+            .question_answer-grade{
+                font-size: $question_grade_font-size;
+                text-align: center;
+                margin: 6px 0px;
+            }
+        }
+
+        .question_answer-data:last-child{
+            padding-right: 16px;
+
+            .question_answer-text{
+                font-size: $question_font-size;
+            }
+
+            .question_answer-author_data{
+                margin-top: 16px;
+                padding: 8px 0px;
+                border-bottom: $border_line;
+                display: flex;
+
+                .question_answer-datetime{
+                    margin-left: 10px;
+                }
+
+            }
+        }
+    }
+}

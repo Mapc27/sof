@@ -50,6 +50,8 @@ function add_comment(element, discussion=false, answer_id=null){
                         last_commentary.innerHTML =  html_text + last_commentary.innerHTML
                     }
                 else {last_commentary.previousElementSibling.outerHTML += html_text}
+
+                element.previousElementSibling.value = ''
             }
         });
         }

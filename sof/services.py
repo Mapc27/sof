@@ -1,5 +1,5 @@
 from sof import db
-from .models import User, Commentary, Answer, Discussion
+from sof.models import User, Commentary, Answer, Discussion
 from werkzeug.security import check_password_hash, generate_password_hash
 
 
@@ -28,7 +28,7 @@ def nickname_validation(nickname):
     return all((
         len(nickname) > 2,
         len([1 for symbol in nickname if symbol.isalpha()]) > 1,
-                ))
+    ))
 
 
 def try_login(email, password):
@@ -87,3 +87,18 @@ def change_answer_grade_(answer_id, up=False):
     else:
         answer.grade += -1
     db.session.commit()
+
+
+def get_discussions_by_answers_user_id(user_id):
+    return db.session.query(Discussion)\
+        .join(Answer, Answer.discussion_id == Discussion.id).filter_by(user_id=user_id).all()
+
+
+def get_answers_by_commentaries_user_id(user_id):
+    return db.session.query(Answer)\
+        .join(Commentary, Commentary.answer_id == Answer.id).filter_by(user_id=user_id).all()
+
+
+def get_discussions_by_commentaries_user_id(user_id):
+    return db.session.query(Discussion)\
+        .join(Commentary, Commentary.answer_id == Discussion.id).filter_by(user_id=user_id).all()
