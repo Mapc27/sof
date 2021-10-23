@@ -30,12 +30,11 @@ $nickname_font-size: 13px;
         .content-header-title{
             font-size: 27px;
             color: $black700;
+            font-weight: 700;
         }
 
         .content-header-ask-question{
             margin: auto 0px;
-            
-            
         }
     }
 
@@ -51,23 +50,36 @@ $nickname_font-size: 13px;
             .discussion-statistics{
                 display: flex;
                 justify-self: center;
+                
+                .discussion-statistics-item-link{
+                    text-decoration: none;
+                    color: $black700;
 
-                .discussion-statistics-item{
+                    .discussion-statistics-item{
                     padding: 6px;
 
-                    .discussion-statistics-count{
-                        text-align: center;
-                    }
+                        .discussion-statistics-count{
+                            text-align: center;
 
-                    .discussion-statistics-title{
-                        text-align: center;
+                        }
+
+                        .discussion-statistics-title{
+                            text-align: center;
+
+                        }
                     }
                 }
+                
             }
 
             .discussion-details{
                 .discussion-details-title{
                     margin-bottom: 5.25px;
+
+                    .discussion-details-title-link{
+                        text-decoration: none;
+                        color: $blue;
+                    }   
                 }
 
                 .discussion-details-info{
@@ -90,7 +102,7 @@ $nickname_font-size: 13px;
 .datetime{
     font-size: $datetime_font-size;
     margin: auto 0px;
-    padding: auto 0px; 
+    //padding: auto 0px;
 }
 
 .user-link{

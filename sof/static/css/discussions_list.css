@@ -22,6 +22,7 @@
 .content .content-header .content-header-title {
   font-size: 27px;
   color: #3b4045;
+  font-weight: 700;
 }
 
 .content .content-header .content-header-ask-question {
@@ -44,20 +45,30 @@
   justify-self: center;
 }
 
-.content .discussions-list .discussion .discussion-statistics .discussion-statistics-item {
+.content .discussions-list .discussion .discussion-statistics .discussion-statistics-item-link {
+  text-decoration: none;
+  color: #3b4045;
+}
+
+.content .discussions-list .discussion .discussion-statistics .discussion-statistics-item-link .discussion-statistics-item {
   padding: 6px;
 }
 
-.content .discussions-list .discussion .discussion-statistics .discussion-statistics-item .discussion-statistics-count {
+.content .discussions-list .discussion .discussion-statistics .discussion-statistics-item-link .discussion-statistics-item .discussion-statistics-count {
   text-align: center;
 }
 
-.content .discussions-list .discussion .discussion-statistics .discussion-statistics-item .discussion-statistics-title {
+.content .discussions-list .discussion .discussion-statistics .discussion-statistics-item-link .discussion-statistics-item .discussion-statistics-title {
   text-align: center;
 }
 
 .content .discussions-list .discussion .discussion-details .discussion-details-title {
   margin-bottom: 5.25px;
+}
+
+.content .discussions-list .discussion .discussion-details .discussion-details-title .discussion-details-title-link {
+  text-decoration: none;
+  color: #0a95ff;
 }
 
 .content .discussions-list .discussion .discussion-details .discussion-details-info {
@@ -72,7 +83,6 @@
 .datetime {
   font-size: 12px;
   margin: auto 0px;
-  padding: auto 0px;
 }
 
 .user-link {
