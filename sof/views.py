@@ -1,7 +1,8 @@
-from flask import Blueprint, render_template, session, redirect, url_for, request, Response, make_response
+from flask import Blueprint, render_template, session, redirect, url_for, request, Response
 from flask_login import login_required
 
 from sof import Discussion, Tag
+from sof.serializers import answer_serializer, commentary_serializer
 from sof.services import create_commentary, create_answer, change_discussion_grade_, change_answer_grade_, \
     clear_session, create_discussion
 
@@ -17,6 +18,12 @@ def before_request():
 @views.route('/', methods=['GET'])
 def index():
     return render_template('index.html')
+
+
+@login_required
+@views.route('/<int:user_id>')
+def view_user(user_id):
+    return redirect(url_for('views.index'))
 
 
 @views.route('/questions/', methods=['GET'])
@@ -49,24 +56,28 @@ def add_discussion():
 @views.route('/questions/<int:discussion_id>/new_answer', methods=['POST'])
 def add_answer(discussion_id):
     answer_text = request.values.get('text')
-    create_answer(answer_text=answer_text, user_id=session['user']['id'], discussion_id=discussion_id)
-    return Response("200")
+    answer = create_answer(answer_text=answer_text, user_id=session['user']['id'], discussion_id=discussion_id)
+    return answer_serializer(answer), 200
 
 
 @login_required
 @views.route('/questions/<int:discussion_id>/new_comment', methods=['POST'])
 def add_discussion_commentary(discussion_id):
     commentary_text = request.values.get('text')
-    create_commentary(commentary_text=commentary_text, discussion_id=discussion_id, user_id=session['user']['id'])
-    return Response("200")
+    commentary = create_commentary(
+        commentary_text=commentary_text,
+        discussion_id=discussion_id,
+        user_id=session['user']['id']
+    )
+    return commentary_serializer(commentary), 200
 
 
 @login_required
 @views.route('/questions/<int:discussion_id>/answer/<int:answer_id>/new_comment', methods=['POST'])
 def add_answer_commentary(discussion_id, answer_id):
     commentary_text = request.values.get('text')
-    create_commentary(commentary_text=commentary_text, answer_id=answer_id, user_id=session['user']['id'])
-    return Response("200")
+    commentary = create_commentary(commentary_text=commentary_text, answer_id=answer_id, user_id=session['user']['id'])
+    return commentary_serializer(commentary), 200
 
 
 @login_required

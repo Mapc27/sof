@@ -21,87 +21,100 @@
         <div class="content-mainbar">
 
             <table class="question_answer">
-                <tr class="question_answer-row">
-                    <td class="question_answer-data">
-                        <svg aria-hidden="true" class="svg-icon iconArrowUpLg" width="36" height="36" viewBox="0 0 36 36" onclick="change_grade(element=this, discussion=true, answer=false, discussion_id='{{discussion.id}}', answer_id=null, up=true)">
-                            <path class="change_grade" d="M2 26h32L18 10 2 26Z"></path>
-                        </svg>
+                <tbody>
+                    <tr class="question_answer-row">
+                        <td class="question_answer-data">
+                            <svg aria-hidden="true" class="svg-icon iconArrowUpLg" width="36" height="36" viewBox="0 0 36 36" onclick="change_grade(element=this, discussion=true, answer_id=null, up=true)">
+                                <path class="change_grade" d="M2 26h32L18 10 2 26Z"></path>
+                            </svg>
 
-                        <div class="question_answer-grade">{{discussion.grade}}</div>
+                            <div class="question_answer-grade">{{discussion.grade}}</div>
 
-                        <svg aria-hidden="true" class="svg-icon iconArrowDownLg" width="36" height="36" viewBox="0 0 36 36" onclick="change_grade(element=this, discussion=true, answer=false, discussion_id='{{discussion.id}}', answer_id=null, up=false)">
-                            <path class="change_grade" d="M2 10h32L18 26 2 10Z"></path>
-                        </svg>
+                            <svg aria-hidden="true" class="svg-icon iconArrowDownLg" width="36" height="36" viewBox="0 0 36 36" onclick="change_grade(element=this, discussion=true, answer_id=null, up=false)">
+                                <path class="change_grade" d="M2 10h32L18 26 2 10Z"></path>
+                            </svg>
 
-                    </td>
-                    <td class="question_answer-data">
-                        <div class="question_answer-text">
-                            {{ discussion.text }}
-                        </div>
-                        
-                        <div class="question_answer-author_data">
-                            <div class="question_answer-user">
-                                <a href="{{url_for('views.view_user', user_id=discussion.user.id)}}" class="question_answer-user-link user-link">{{discussion.user.nickname}}</a>
+                        </td>
+                        <td class="question_answer-data">
+                            <div class="question_answer-text">
+                                {{ discussion.text }}
                             </div>
-                            <div class="question_answer-datetime datetime">
-                                Asked {{discussion.updated_at.strftime('%d.%m.%Y %H:%M')}}
+
+                            <div class="question_answer-author_data">
+                                <div class="question_answer-user">
+                                    <a href="{{url_for('views.view_user', user_id=discussion.user.id)}}" class="question_answer-user-link user-link">{{discussion.user.nickname}}</a>
+                                </div>
+                                <div class="question_answer-datetime datetime">
+                                    Asked {{discussion.updated_at.strftime('%d.%m.%Y %H:%M')}}
+                                </div>
+                                    {% if discussion.edited %}
+                                        <div class="question_answer-edited"> edited</div>
+                                    {% endif %}
                             </div>
-                                {% if discussion.edited %}
-                                    <div class="question_answer-edited"> edited</div>
-                                {% endif %}
-                        </div>
-                    
-                        <table class="commentaries">
-                            {% for commentary in discussion.commentaries %}
-                                <tr class="commentary-row">
 
-                                    <td class="commentary-data">
-                                        {% if commentary.grade != 0 %}
-                                            <div class="commentary-grade">{{commentary.grade}}</div>
-                                        {% endif %}                                    
-                                    </td>
-                                    <td class="commentary-data">
+                            <table class="commentaries">
+                                <tbody>
+                                    {% for commentary in discussion.commentaries %}
+                                    <tr class="commentary-row">
 
-                                        <div class="commentary">
-                                            <div class="commentary-text">
-                                                {{commentary.text}} – 
-                                                <a href="{{url_for('views.view_user', user_id=commentary.user.id)}}" class="commentary-user-link user-link">{{commentary.user.nickname}}</a> 
-                                                {{commentary.updated_at.strftime('%d.%m.%Y %H:%M')}}
-                                                {% if commentary.edited %}
-                                                   edited
-                                                {% endif %}
+                                        <td class="commentary-data">
+                                            {% if commentary.grade != 0 %}
+                                                <div class="commentary-grade">{{commentary.grade}}</div>
+                                            {% endif %}
+                                        </td>
+                                        <td class="commentary-data">
 
+                                            <div class="commentary">
+                                                <div class="commentary-text">
+                                                    {{commentary.text}} –
+                                                    <a href="{{url_for('views.view_user', user_id=commentary.user.id)}}" class="commentary-user-link user-link">{{commentary.user.nickname}}</a>
+                                                    {{commentary.updated_at.strftime('%d.%m.%Y %H:%M')}}
+                                                    {% if commentary.edited %}
+                                                       edited
+                                                    {% endif %}
+                                                </div>
                                             </div>
-                                        </div>    
 
-                                    </td>
+                                        </td>
 
-                                </tr>
-                            {% endfor %}
-                            <tr class="new_commentary-row">
-                                <td></td>
-                                <td class="new_commentary-data">
-                                    <div class="input-group mb-3">
-                                        <input id="discussion{{discussion.id}}" type="text" class="form-control" placeholder="Add a new comment">
-                                        <button class="btn btn-outline-secondary" type="button" onclick="add_comment(discussion=true, answer=false, discussion_id='{{discussion.id}}', answer_id=null)">Add</button>
-                                      </div>
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
+                                    </tr>
+                                    {% endfor %}
+                                    <tr class="new_commentary-row">
+                                        <td></td>
+                                        <td class="new_commentary-data">
+                                            <div class="input-group mb-3">
+                                                <input type="text" class="form-control discussion_commentary_input" placeholder="Add a new comment">
+                                                <button class="btn btn-outline-secondary" type="button" onclick="add_comment(element=this, discussion=true, answer_id=null)">Add</button>
+                                              </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </tbody>
             </table>
             <div class="under_question">
-                {{discussion.answers | count}} Answers
+                <span>
+                    {{discussion.answers | count}}
+                </span> Answers
             </div>
             <table class="question_answer">
+                <tbody>
                     {% for answer in discussion.answers %}
                         <tr class="question_answer-row">
                             <td class="question_answer-data">
-                                <!-- <img class="change_grade" src="{{url_for('static', filename='images/up.png')}}" width="32px" height="20px" onclick="change_grade(discussion=false, answer=true, discussion_id='{{discussion.id}}', answer_id='{{answer.id}}', up=true)">
-                                <div class="question_answer-grade">{{answer.grade}}</div>
-                                <img class="change_grade" src="{{url_for('static', filename='images/down.png')}}" width="32px" height="20px" onclick="change_grade(discussion=false, answer=true, discussion_id='{{discussion.id}}', answer_id='{{answer.id}}', up=false)"> -->
-                            </td>
+                            <svg aria-hidden="true" class="svg-icon iconArrowUpLg" width="36" height="36" viewBox="0 0 36 36" onclick="change_grade(element=this, discussion=false, answer_id={{answer.id}}, up=true)">
+                                <path class="change_grade" d="M2 26h32L18 10 2 26Z"></path>
+                            </svg>
+
+                            <div class="question_answer-grade">{{answer.grade}}</div>
+
+                            <svg aria-hidden="true" class="svg-icon iconArrowDownLg" width="36" height="36" viewBox="0 0 36 36" onclick="change_grade(element=this, discussion=false, answer_id={{answer.id}}, up=false)">
+                                <path class="change_grade" d="M2 10h32L18 26 2 10Z"></path>
+                            </svg>
+
+                        </td>
                             <td class="question_answer-data">
                                 <div class="question_answer-text">
                                     {{ answer.text }}
@@ -116,42 +129,49 @@
                                         {% endif %}
                                 </div>
                                 <table class="commentaries">
+                                    <tbody>
                                     {% for commentary in answer.commentaries %}
                                         <tr class="commentary-row">
+
                                             <td class="commentary-data">
                                                 {% if commentary.grade != 0 %}
                                                     <div class="commentary-grade">{{commentary.grade}}</div>
                                                 {% endif %}
                                             </td>
                                             <td class="commentary-data">
+
                                                 <div class="commentary">
                                                     <div class="commentary-text">
-                                                        {{commentary.text}} – 
-                                                        <a href="{{url_for('views.view_user', user_id=commentary.user.id)}}" class="commentary-user-link user-link">{{commentary.user.nickname}}</a> 
+                                                        {{commentary.text}} –
+                                                        <a href="{{url_for('views.view_user', user_id=commentary.user.id)}}" class="commentary-user-link user-link">{{commentary.user.nickname}}</a>
                                                         {{commentary.updated_at.strftime('%d.%m.%Y %H:%M')}}
                                                         {% if commentary.edited %}
                                                            edited
                                                         {% endif %}
-        
+
                                                     </div>
-                                                </div>                            
+                                                </div>
+
                                             </td>
+
                                         </tr>
                                     {% endfor %}
                                         <tr class="new_commentary-row">
                                             <td></td>
                                             <td class="new_commentary-data">
                                                 <div class="input-group mb-3">
-                                                    <input id="answer{{answer.id}}" type="text" class="form-control" placeholder="Add a new comment">
-                                                    <button class="btn btn-outline-secondary" type="button" onclick="add_comment(discussion=false, answer=true, answer_id='{{answer.id}}', discussion_id='{{discussion.id}}')">Add</button>
-                                                </div>
+                                                    <input type="text" class="form-control answer_commentary_input" placeholder="Add a new comment">
+                                                    <button class="btn btn-outline-secondary" type="button" onclick="add_comment(element=this, discussion=false, answer_id='{{ answer.id }}')">Add</button>
+                                                  </div>
                                             </td>
                                         </tr>
+                                    </tbody>
                                 </table>
                             </td>
                         </tr>
                     {% endfor %}
-            </table> <!-- /.answers -->
+                </tbody>
+            </table> <!-- /.question_answer -->
             <div class="new_answer">
                 <div class="new_answer-title">
                     Your Answer
@@ -166,97 +186,5 @@
         </div> <!-- /.content-mainbar -->
 </div>
 <script type="text/javascript" src="{{url_for('static', filename='js/jquery.min.js')}}"></script>
-<script>
-function add_comment(discussion=false, answer=false, discussion_id=null, answer_id=null){
-    $(document).ready(function(){
-        if (discussion === true){
-            var text = $("#discussion" + discussion_id)[0].value;
-            url_ = discussion_id + "/new_comment";
-        }
-        else{
-            var text = $("#answer" + answer_id)[0].value;
-            url_ = discussion_id + "/answer/" + answer_id + "/new_comment";
-        }
-
-        let data = {
-            'text': text,
-        }
-
-        $.ajax({ 
-            url: url_, 
-            type: "POST",
-            data: data,
-            success: function(data) {
-                console.log(data);
-                } 
-            });
-        } 
-    );
-}
-
-function add_answer(discussion_id) {
-    $(document).ready(function(){
-        let text = $("#new_answer-text")[0].value;
-      
-        let data = {
-            'text': text,
-        }
-        url_ = discussion_id + '/new_answer'
-        $.ajax({
-            url: url_,
-            type: "GET",
-            data: data,
-            success: function(text) {
-                console.log(text)
-            }
-            });
-        }
-    );
-}
-
-function change_grade_(discussion=false, answer=false, discussion_id=null, answer_id=null, up=false) {
-    let url;
-    if (discussion) {
-        if (up === true) url = discussion_id + '/up'
-        else {
-            url = discussion_id + '/down';
-        }
-    }
-    else{
-        if (up === true) url = discussion_id + '/answer/' + answer_id + '/up'
-        else url = discussion_id + '/answer/' + answer_id + '/down'
-    }
-
-
-    $.ajax({ 
-        url: url, 
-        type: "GET",
-        success: function(data) {
-            console.log(data);
-            } 
-        });
-}
-
-function change_grade(element, discussion=false, answer=false, discussion_id=null, answer_id=null, up=false) {
-    $(document).ready(function(){
-        element = element.getElementsByClassName('change_grade')[0]
-        if (element.getAttribute('pressed') === "true") {
-            if (up === false) {
-                change_grade_(discussion = discussion, answer = answer, discussion_id = discussion_id, answer_id = answer_id, up = true)
-            }
-            else {
-                change_grade_(discussion = discussion, answer = answer, discussion_id = discussion_id, answer_id = answer_id, up = false)
-            }
-            element.classList.remove('pressed')
-
-            element.setAttribute('pressed', 'false')
-        }
-        else{
-            element.classList.add('pressed')
-            element.setAttribute('pressed', 'true')
-            change_grade_(discussion=discussion, answer=answer, discussion_id=discussion_id, answer_id=answer_id, up=up)
-        }
-        });
-}
-</script>
+<script type="text/javascript" src="{{url_for('static', filename='js/script.js')}}"></script>
 {% endblock %}
