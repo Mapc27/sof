@@ -5,18 +5,19 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.ext.declarative import declarative_base
 
 from sof import db
+
 # db = SQLAlchemy()
 
 # Base = declarative_base()
 
 association_discussion_tag_table = db.Table('discussion_tag',
-                                            db.Column('discussion_id', db.ForeignKey('discussion.id'), primary_key=True),
-                                            db.Column('tag_id', db.ForeignKey('tag.id'), primary_key=True)
+                                            db.Column('discussion_id', db.ForeignKey('discussions.id'), primary_key=True),
+                                            db.Column('tag_id', db.ForeignKey('tags.id'), primary_key=True)
                                             )
 
 association_user_tag_table = db.Table('user_tag',
-                                      db.Column('user_id', db.ForeignKey('user.id'), primary_key=True),
-                                      db.Column('tag_id', db.ForeignKey('tag.id'), primary_key=True)
+                                      db.Column('user_id', db.ForeignKey('users.id'), primary_key=True),
+                                      db.Column('tag_id', db.ForeignKey('tags.id'), primary_key=True)
                                       )
 
 
@@ -32,7 +33,7 @@ association_user_tag_table = db.Table('user_tag',
 
 
 class User(UserMixin, db.Model):
-    __tablename__ = "user"
+    __tablename__ = "users"
 
     id = db.Column(db.Integer, unique=True, autoincrement=True, nullable=False, primary_key=True)
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.now())
@@ -56,7 +57,7 @@ class User(UserMixin, db.Model):
 
 
 class Discussion(db.Model):
-    __tablename__ = "discussion"
+    __tablename__ = "discussions"
 
     id = db.Column(db.Integer, unique=True, autoincrement=True, nullable=False, primary_key=True)
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.now())
@@ -76,7 +77,7 @@ class Discussion(db.Model):
 
     commentaries = db.relationship("Commentary", backref="discussion")
 
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
     edited = db.Column(db.Boolean, nullable=False, default=False)
 
@@ -86,7 +87,7 @@ class Discussion(db.Model):
 
 
 class Tag(db.Model):
-    __tablename__ = "tag"
+    __tablename__ = "tags"
     title = db.Column(db.String(1000), nullable=False, unique=True)
 
     id = db.Column(db.Integer, unique=True, autoincrement=True, nullable=False, primary_key=True)
@@ -104,7 +105,7 @@ class Tag(db.Model):
 
 
 class Answer(db.Model):
-    __tablename__ = "answer"
+    __tablename__ = "answers"
 
     id = db.Column(db.Integer, unique=True, autoincrement=True, nullable=False, primary_key=True)
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.now())
@@ -113,8 +114,8 @@ class Answer(db.Model):
     text = db.Column(db.TEXT, nullable=False)
     grade = db.Column(db.Integer, nullable=False, default=0)
 
-    discussion_id = db.Column(db.Integer, db.ForeignKey('discussion.id'))
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    discussion_id = db.Column(db.Integer, db.ForeignKey('discussions.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     commentaries = db.relationship("Commentary", backref="answer")
 
     edited = db.Column(db.Boolean, nullable=False, default=False)
@@ -126,7 +127,7 @@ class Answer(db.Model):
 
 
 class Commentary(db.Model):
-    __tablename__ = "commentary"
+    __tablename__ = "commentaries"
 
     id = db.Column(db.Integer, unique=True, autoincrement=True, nullable=False, primary_key=True)
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.now())
@@ -135,11 +136,11 @@ class Commentary(db.Model):
     text = db.Column(db.TEXT, nullable=False)
     grade = db.Column(db.Integer, nullable=False, default=0)
 
-    answer_id = db.Column(db.Integer, db.ForeignKey('answer.id'))
+    answer_id = db.Column(db.Integer, db.ForeignKey('answers.id'))
 
-    discussion_id = db.Column(db.Integer, db.ForeignKey('discussion.id'))
+    discussion_id = db.Column(db.Integer, db.ForeignKey('discussions.id'))
 
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
     edited = db.Column(db.Boolean, nullable=False, default=False)
 
