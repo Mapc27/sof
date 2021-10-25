@@ -25,13 +25,13 @@
                     <tr class="question_answer-row">
                         <td class="question_answer-data">
                             <svg aria-hidden="true" class="svg-icon iconArrowUpLg" width="36" height="36" viewBox="0 0 36 36" onclick="change_grade(element=this, discussion=true, answer_id=null, up=true)">
-                                <path class="change_grade" d="M2 26h32L18 10 2 26Z"></path>
+                                <path class="change_grade {% if discussion.id in discussion_grade_dict and discussion_grade_dict[discussion.id] == True %} pressed {% endif %}" d="M2 26h32L18 10 2 26Z"></path>
                             </svg>
 
                             <div class="question_answer-grade">{{discussion.grade}}</div>
 
                             <svg aria-hidden="true" class="svg-icon iconArrowDownLg" width="36" height="36" viewBox="0 0 36 36" onclick="change_grade(element=this, discussion=true, answer_id=null, up=false)">
-                                <path class="change_grade" d="M2 10h32L18 26 2 10Z"></path>
+                                <path class="change_grade {% if discussion.id in discussion_grade_dict and discussion_grade_dict[discussion.id] == False %} pressed {% endif %}" d="M2 10h32L18 26 2 10Z"></path>
                             </svg>
 
                         </td>
@@ -105,13 +105,13 @@
                         <tr class="question_answer-row">
                             <td class="question_answer-data">
                             <svg aria-hidden="true" class="svg-icon iconArrowUpLg" width="36" height="36" viewBox="0 0 36 36" onclick="change_grade(element=this, discussion=false, answer_id={{answer.id}}, up=true)">
-                                <path class="change_grade" d="M2 26h32L18 10 2 26Z"></path>
+                                <path class="change_grade {% if answer.id in answer_grade_dict and answer_grade_dict[answer.id] == True %} pressed {% endif %}" d="M2 26h32L18 10 2 26Z"></path>
                             </svg>
 
                             <div class="question_answer-grade">{{answer.grade}}</div>
 
                             <svg aria-hidden="true" class="svg-icon iconArrowDownLg" width="36" height="36" viewBox="0 0 36 36" onclick="change_grade(element=this, discussion=false, answer_id={{answer.id}}, up=false)">
-                                <path class="change_grade" d="M2 10h32L18 26 2 10Z"></path>
+                                <path class="change_grade {% if answer.id in answer_grade_dict and answer_grade_dict[answer.id] == False %} pressed {% endif %}" d="M2 10h32L18 26 2 10Z"></path>
                             </svg>
 
                         </td>

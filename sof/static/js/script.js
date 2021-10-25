@@ -1,5 +1,5 @@
-function add_comment(element, discussion=false, answer_id=null){
-    $(document).ready(function(){
+function add_comment(element, discussion = false, answer_id = null) {
+    $(document).ready(function () {
         let text;
         let url;
         text = element.previousElementSibling.value
@@ -17,16 +17,16 @@ function add_comment(element, discussion=false, answer_id=null){
             url: url,
             type: "POST",
             data: data,
-            success: function(response_dict) {
+            success: function (response_dict) {
                 console.log(response_dict)
-                let commentary_id =  response_dict['commentary_id']
+                let commentary_id = response_dict['commentary_id']
                 let commentary_text = response_dict['commentary_text']
                 let commentary_grade = response_dict['commentary_grade']
                 let commentary_updated_at = response_dict['commentary_updated_at']
                 let commentary_user = response_dict['commentary_user']
 
                 let html_text =
-               `<tr class="commentary-row">
+                    `<tr class="commentary-row">
                     <td class="commentary-data">
 
                     </td>
@@ -43,23 +43,22 @@ function add_comment(element, discussion=false, answer_id=null){
                </tr>`
 
                 let last_commentary = $(element).closest('.new_commentary-row')[0]
-                if (last_commentary === undefined || last_commentary.previousElementSibling === null)
-                    {
-                        last_commentary = $(element).closest("tbody")[0]
-                        console.log(last_commentary)
-                        last_commentary.innerHTML =  html_text + last_commentary.innerHTML
-                    }
-                else {last_commentary.previousElementSibling.outerHTML += html_text}
+                if (last_commentary === undefined || last_commentary.previousElementSibling === null) {
+                    last_commentary = $(element).closest("tbody")[0]
+                    console.log(last_commentary)
+                    last_commentary.innerHTML = html_text + last_commentary.innerHTML
+                }
+                else { last_commentary.previousElementSibling.outerHTML += html_text }
 
                 element.previousElementSibling.value = ''
             }
         });
-        }
+    }
     );
 }
 
 function add_answer() {
-    $(document).ready(function(){
+    $(document).ready(function () {
         let text = $("#new_answer-text")[0];
 
         let data = {
@@ -71,7 +70,7 @@ function add_answer() {
             url: url,
             type: "POST",
             data: data,
-            success: function(response_dict) {
+            success: function (response_dict) {
                 let answer_id = response_dict['answer_id'];
                 let answer_grade = response_dict['answer_grade'];
                 let answer_text = response_dict['answer_text']
@@ -120,51 +119,56 @@ function add_answer() {
                 under_question.innerHTML = Number(under_question.innerHTML) + 1
                 text.value = ''
             }
-            });
-        }
+        });
+    }
     );
 }
 
-//===================== Не работает =====================
-function change_grade_(discussion=false, answer_id=null, up=false) {
+function change_grade(element, discussion = false, answer_id = null, up = false) {
+    arrow = element.getElementsByClassName("change_grade")[0]
+
+    if (arrow.classList.contains("pressed")){
+        arrow.classList.remove("pressed")
+    }
+
+    else {
+        arrow.classList.add("pressed")
+
+        other_arrow = element.parentNode.getElementsByClassName("change_grade")
+        if (other_arrow[0] === arrow){
+            other_arrow = other_arrow[1]
+        }
+        else{
+            other_arrow = other_arrow[0]
+        }
+
+        if (other_arrow.classList.contains("pressed")){
+            other_arrow.classList.remove("pressed")
+        }
+    }
+    
+
     let url;
     if (discussion === true) {
-        if (up === true) url = window.location.href + '/up'
-        else url = window.location.href + '/down';
+        url = window.location.href + '/change_grade'
     }
-    else{
-        if (up === true) url = window.location.href + '/answer/' + answer_id + '/up'
-        else url = window.location.href + '/answer/' + answer_id + '/down'
+    else {
+        url = window.location.href + '/answer/' + answer_id + '/change_grade'
+    }
+
+    data = {
+        "up": up,
     }
 
     $.ajax({
         url: url,
-        type: "GET",
-        success: function(data) {
-            console.log(data);
+        type: "POST",
+        data: data,
+        success: function (response_dict) {
+            grade = response_dict['grade']
+            if (grade != null){
+                element.parentNode.getElementsByClassName("question_answer-grade")[0].innerHTML = grade
             }
-        });
-}
-
-function change_grade(element, discussion=false, answer_id=null, up=false) {
-    $(document).ready(function(){
-        element = element.getElementsByClassName('change_grade')[0]
-
-        if (element.getAttribute('pressed') === "true") {
-            if (up === false) {
-                change_grade_(discussion, answer_id, true)
-            }
-            else {
-                change_grade_(discussion, answer_id, false)
-            }
-            element.classList.remove('pressed')
-
-            element.setAttribute('pressed', 'false')
         }
-        else{
-            element.classList.add('pressed')
-            element.setAttribute('pressed', 'true')
-            change_grade_(discussion, answer_id, up)
-        }
-        });
+    });
 }

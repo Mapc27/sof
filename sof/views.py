@@ -4,9 +4,8 @@ from flask_login import login_required
 from sof import Discussion, User
 from sof.serializers import answer_serializer, commentary_serializer
 from sof.services import create_commentary, create_answer, change_discussion_grade_, change_answer_grade_, \
-    clear_session, create_discussion, get_answers_by_commentaries_user_id, get_discussions_by_commentaries_user_id,\
-    get_discussions_by_answers_user_id
-
+    clear_session, create_discussion, get_answers_by_commentaries_user_id, get_discussions_by_commentaries_user_id, \
+    get_discussions_by_answers_user_id, get_answer_grades_for_user, get_discussion_grades_for_user
 
 views = Blueprint('views', __name__)
 
@@ -19,7 +18,7 @@ def before_request():
 
 @views.route('/', methods=['GET'])
 def index():
-    return render_template('index.html')
+    return redirect(url_for("views.discussions_list"))
 
 
 @login_required
@@ -47,10 +46,17 @@ def discussions_list():
 
 
 @views.route('/questions/<int:discussion_id>')
-def view_discussion(discussion_id):
+def discussion_details(discussion_id):
     discussion = Discussion.query.filter_by(id=discussion_id).first()
     if discussion:
-        return render_template('discussion_details.html', discussion=discussion)
+        discussion_grade_dict = get_discussion_grades_for_user(user_id=session['user']['id'])
+        answer_grade_dict = get_answer_grades_for_user(user_id=session['user']['id'])
+
+        return render_template('discussion_details.html',
+                               discussion=discussion,
+                               discussion_grade_dict=discussion_grade_dict,
+                               answer_grade_dict=answer_grade_dict
+                               )
     return redirect(url_for('views.index'))
 
 
@@ -97,24 +103,23 @@ def add_answer_commentary(discussion_id, answer_id):
 @login_required
 @views.route('/questions/<int:discussion_id>/edit')
 def edit_discussion(user_id, discussion_id):
+    """
+    Не работает
+    """
     pass
 
 
 @login_required
-@views.route('/questions/<int:discussion_id>/<string:value>', methods=['GET'])
-def change_discussion_grade(discussion_id, value):
-    if value == 'up':
-        change_discussion_grade_(discussion_id, up=True)
-    else:
-        change_discussion_grade_(discussion_id, up=False)
-    return Response("200")
+@views.route('/questions/<int:discussion_id>/change_grade', methods=['POST'])
+def change_discussion_grade(discussion_id):
+    up = request.values.get('up') == 'true'
+    grade = change_discussion_grade_(discussion_id, user_id=session['user']['id'], up=up)
+    return {"grade": grade}, "200"
 
 
 @login_required
-@views.route('/questions/<int:discussion_id>/answer/<int:answer_id>/<string:value>', methods=['GET'])
-def change_answer_grade(discussion_id, answer_id, value):
-    if value == 'up':
-        change_answer_grade_(answer_id, up=True)
-    else:
-        change_answer_grade_(answer_id, up=False)
-    return Response("200")
+@views.route('/questions/<int:discussion_id>/answer/<int:answer_id>/change_grade', methods=['POST'])
+def change_answer_grade(discussion_id, answer_id):
+    up = request.values.get('up') == 'true'
+    grade = change_answer_grade_(answer_id, user_id=session['user']['id'], up=up)
+    return {"grade": grade}, "200"

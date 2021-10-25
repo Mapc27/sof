@@ -21,7 +21,7 @@
             {% for discussion in discussions %}
                 <div class="discussion">
                     <div class="discussion-statistics">
-                        <a class="discussion-statistics-item-link" href="{{url_for('views.view_discussion', discussion_id=discussion.id)}}">
+                        <a class="discussion-statistics-item-link" href="{{url_for('views.discussion_details', discussion_id=discussion.id)}}">
                             <div class="discussion-statistics-item">
                                 <div class="discussion-statistics-count">
                                     {{discussion.grade}}
@@ -31,7 +31,7 @@
                                 </div>
                             </div>
                         </a>
-                        <a class="discussion-statistics-item-link" href="{{url_for('views.view_discussion', discussion_id=discussion.id)}}">
+                        <a class="discussion-statistics-item-link" href="{{url_for('views.discussion_details', discussion_id=discussion.id)}}">
                             <div class="discussion-statistics-item">
                                 <div class="discussion-statistics-count">
                                     {{discussion.answers | count}}
@@ -41,7 +41,7 @@
                                 </div>
                             </div>
                         </a>
-                        <a class="discussion-statistics-item-link" href="{{url_for('views.view_discussion', discussion_id=discussion.id)}}">
+                        <a class="discussion-statistics-item-link" href="{{url_for('views.discussion_details', discussion_id=discussion.id)}}">
                             <div class="discussion-statistics-item">
                                 <div class="discussion-statistics-count">
                                     0
@@ -54,7 +54,7 @@
                     </div>
                     <div class="discussion-details">
                         <h3 class="discussion-details-title">
-                            <a class="discussion-details-title-link" href="{{url_for('views.view_discussion', discussion_id=discussion.id)}}">{{discussion.title}}</a>
+                            <a class="discussion-details-title-link" href="{{url_for('views.discussion_details', discussion_id=discussion.id)}}">{{discussion.title}}</a>
                         </h3>
                         <div class="discussion-details-info">
                             <div class="discussion-details-tags">
