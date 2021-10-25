@@ -167,6 +167,10 @@ class DiscussionGrade(db.Model):
 
     up = db.Column(db.Boolean, nullable=False)
 
+    def __repr__(self):
+        return "<DiscussionGrade(id='%s', user_id='%s', discussion_id='%s', up='%s')>" %\
+               (self.id, self.user_id, self.discussion_id, self.up)
+
 
 class AnswerGrade(db.Model):
     __tablename__ = "answer_grades"
@@ -180,3 +184,7 @@ class AnswerGrade(db.Model):
     answer_id = db.Column(db.Integer, db.ForeignKey('answers.id'))
 
     up = db.Column(db.Boolean, nullable=False)
+
+    def __repr__(self):
+        return "<AnswerGrade(id='%s', user_id='%s', answer_id='%s', up='%s')>" %\
+               (self.id, self.user_id, self.answer_id, self.up)
