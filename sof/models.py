@@ -46,6 +46,8 @@ class User(UserMixin, db.Model):
     discussions = db.relationship("Discussion", backref="user")
     answers = db.relationship("Answer", backref="user")
     commentaries = db.relationship("Commentary", backref="user")
+    discussion_grades = db.relationship("DiscussionGrade", backref="user")
+    answer_grades = db.relationship("AnswerGrade", backref="user")
 
     tags = db.relationship("Tag",
                            secondary=association_user_tag_table,
@@ -76,6 +78,8 @@ class Discussion(db.Model):
     answers = db.relationship("Answer", backref="discussion")
 
     commentaries = db.relationship("Commentary", backref="discussion")
+
+    grades = db.relationship("DiscussionGrade", backref="discussion")
 
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
@@ -117,6 +121,7 @@ class Answer(db.Model):
     discussion_id = db.Column(db.Integer, db.ForeignKey('discussions.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     commentaries = db.relationship("Commentary", backref="answer")
+    answer_grades = db.relationship("AnswerGrade", backref="answer")
 
     edited = db.Column(db.Boolean, nullable=False, default=False)
     is_solution = db.Column(db.Boolean, nullable=False, default=False)
@@ -147,3 +152,31 @@ class Commentary(db.Model):
     def __repr__(self):
         return "<Commentary(id='%s', discussion_id='%s', answer_id='%s', user_id='%s')>" %\
                (self.id, self.discussion_id, self.answer_id, self.user_id)
+
+
+class DiscussionGrade(db.Model):
+    __tablename__ = "discussion_grades"
+
+    id = db.Column(db.Integer, unique=True, autoincrement=True, nullable=False, primary_key=True)
+    created_at = db.Column(db.DateTime, nullable=False, default=datetime.now())
+    updated_at = db.Column(db.DateTime, nullable=False, default=datetime.now())
+
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+
+    discussion_id = db.Column(db.Integer, db.ForeignKey('discussions.id'))
+
+    up = db.Column(db.Boolean, nullable=False)
+
+
+class AnswerGrade(db.Model):
+    __tablename__ = "answer_grades"
+
+    id = db.Column(db.Integer, unique=True, autoincrement=True, nullable=False, primary_key=True)
+    created_at = db.Column(db.DateTime, nullable=False, default=datetime.now())
+    updated_at = db.Column(db.DateTime, nullable=False, default=datetime.now())
+
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+
+    answer_id = db.Column(db.Integer, db.ForeignKey('answers.id'))
+
+    up = db.Column(db.Boolean, nullable=False)
