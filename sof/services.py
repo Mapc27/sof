@@ -49,6 +49,19 @@ def create_user(email, password, nickname):
     return user
 
 
+def edit_user_(user, email, password, nickname):
+    if email:
+        user.email = email
+
+    if password:
+        user.password = generate_password_hash(password)
+
+    if nickname:
+        user.nickname = nickname
+    db.session.commit()
+    return user
+
+
 def create_discussion(title, text, user_id):
     discussion = Discussion(title=title, text=text, user_id=user_id)
     db.session.add(discussion)

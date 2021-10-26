@@ -51,7 +51,7 @@ def login():
 
         login_user(user=user)
         save_session_data(user, remember)
-        return redirect(url_for('views.index'))
+        return redirect(url_for('views.view_user', user_id=user.id))
 
     return render_template('login.html', default_remember=True)
 
@@ -85,7 +85,7 @@ def register():
 
         user = User.query.filter_by(email=email).first()
         save_session_data(user, remember)
-        return redirect(url_for('views.index'))
+        return redirect(url_for('views.view_user', user_id=user.id))
     return render_template('register.html')
 
 

@@ -45,6 +45,11 @@
   font-size: 15px;
 }
 
+.question_answer .question_answer-row .question_answer-data:last-child .question_answer-text .question_answer-text-link {
+  text-decoration: none;
+  color: #3b4045;
+}
+
 .question_answer .question_answer-row .question_answer-data:last-child .question_answer-author_data {
   margin-top: 16px;
   padding: 8px 0px;

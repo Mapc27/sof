@@ -1,20 +1,20 @@
 {% extends 'base.html' %}
 
 {% block title %}
-    <title>Register</title>
+    <title>Edit profile</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/login_register.css') }}">
 {% endblock %}
 
 {% block content %}
 <div class="form-content">
-	<form class="login-form" action="{{ url_for('auth.register') }}" method="POST">
-		<h5 class="form-title">Registration</h5>
+	<form class="login-form" action="{{ url_for('views.edit_user', user_id=session['user']['id'])}}" method="POST">
+		<h5 class="form-title">Edit profile</h5>
 
 		<div class="errors">
 			{% if email_error %}
 				<p class="error-title">This email is already registered</p>
 			{% endif %}
-			
+
 			{% if password_error %}
 				<p class="error-title">Password should contain:</p>
 				<ul class="error-list">
@@ -36,7 +36,7 @@
 				<p class="error-title">This nickname is already registered</p>
 			{% endif %}
 		</div>
-		
+
 		<div class="mb-3">
 			<label class="form-label">Nickname</label>
 			<input
@@ -62,17 +62,8 @@
 			<input type="password" class="form-control" name="password" value="{{ default_password }}"/>
 		</div>
 
-		<div class="mb-3 form-check">
-
-			{% if default_remember %}
-			<input type="checkbox" class="form-check-input" name='remember' checked/>
-			{% else %}
-			<input type="checkbox" class="form-check-input" name='remember'/>
-			{% endif %}
-
-			<label class="form-check-label">Remember me</label>
-		</div>
-		<button type="submit" class="btn btn-primary">Sign up</button>
+		<button type="submit" class="btn btn-primary">Edit</button>
 	</form>
 </div>
+
 {% endblock %}

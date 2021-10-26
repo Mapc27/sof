@@ -2,10 +2,12 @@ from flask import Blueprint, render_template, session, redirect, url_for, reques
 from flask_login import login_required
 
 from sof import Discussion, User
+from sof.auth import save_session_data
 from sof.serializers import answer_serializer, commentary_serializer
 from sof.services import create_commentary, create_answer, change_discussion_grade_, change_answer_grade_, \
     clear_session, create_discussion, get_answers_by_commentaries_user_id, get_discussions_by_commentaries_user_id, \
-    get_discussions_by_answers_user_id, get_answer_grades_for_user, get_discussion_grades_for_user
+    get_discussions_by_answers_user_id, get_answer_grades_for_user, get_discussion_grades_for_user, password_validation, \
+    nickname_validation, edit_user_
 
 views = Blueprint('views', __name__)
 
@@ -37,6 +39,40 @@ def view_user(user_id):
                            answers_for_user_commentaries=answers_for_user_commentaries,
                            discussions_for_user_commentaries=discussions_for_user_commentaries,
                            user=user)
+
+
+@login_required
+@views.route('/users/<int:user_id>/edit', methods=['GET', 'POST'])
+def edit_user(user_id):
+    user = User.query.filter_by(id=session['user']['id']).first()
+    if request.method == 'POST':
+        email = request.form['email']
+        nickname = request.form['nickname']
+        password = request.form['password']
+
+        if password and not password_validation(password):
+            return render_template('user_edit.html', default_email=email, default_password=password,
+                                    password_error=True)
+
+        if nickname and not nickname_validation(nickname):
+            return render_template('user_edit.html', default_email=email, default_password=password,
+                                    nickname_validation_error=True)
+
+        other_user = User.query.filter_by(email=email).first()
+        if other_user and other_user != user:
+            return render_template('user_edit.html', default_email=email, default_password=password,
+                                    email_error=True)
+
+        other_user = User.query.filter_by(nickname=nickname).first()
+        if other_user and other_user != user:
+            return render_template('user_edit.html', default_email=email, default_password=password,
+                                   nickname_exists_error=True)
+
+        user = edit_user_(user=user, email=email, password=password, nickname=nickname)
+
+        save_session_data(user, session['user']['remember'])
+        return redirect(url_for('views.view_user', user_id=user.id))
+    return render_template('user_edit.html')
 
 
 @views.route('/questions/', methods=['GET'])

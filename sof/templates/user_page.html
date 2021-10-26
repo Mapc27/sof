@@ -4,7 +4,7 @@
     <title>{{ user.nickname }}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/discussions_list.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/discussion_details.css') }}">
-	<link rel="stylesheet" href="{{ url_for('static', filename='css/user_page.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/user_page.css') }}">
 {% endblock %}
 
 {% block content %}
@@ -13,13 +13,16 @@
         <div class="content-header-title">
             {{ discussions.count() }} Questions
         </div>
+        <div class="content-header-ask-question">
+                <a href="{{url_for('views.edit_user', user_id=session['user']['id'])}}" class="btn btn-primary">Edit profile</a>
+        </div>
     </div>
     <div class="content-mainbar">
         <div class="discussions-list">
             {% for discussion in discussions %}
                 <div class="discussion">
                     <div class="discussion-statistics">
-                        <a class="discussion-statistics-item-link" href="{{url_for('views.view_discussion', discussion_id=discussion.id)}}">
+                        <a class="discussion-statistics-item-link" href="{{url_for('views.discussion_details', discussion_id=discussion.id)}}">
                             <div class="discussion-statistics-item">
                                 <div class="discussion-statistics-count">
                                     {{discussion.grade}}
@@ -29,7 +32,7 @@
                                 </div>
                             </div>
                         </a>
-                        <a class="discussion-statistics-item-link" href="{{url_for('views.view_discussion', discussion_id=discussion.id)}}">
+                        <a class="discussion-statistics-item-link" href="{{url_for('views.discussion_details', discussion_id=discussion.id)}}">
                             <div class="discussion-statistics-item">
                                 <div class="discussion-statistics-count">
                                     {{discussion.answers | count}}
@@ -39,7 +42,7 @@
                                 </div>
                             </div>
                         </a>
-                        <a class="discussion-statistics-item-link" href="{{url_for('views.view_discussion', discussion_id=discussion.id)}}">
+                        <a class="discussion-statistics-item-link" href="{{url_for('views.discussion_details', discussion_id=discussion.id)}}">
                             <div class="discussion-statistics-item">
                                 <div class="discussion-statistics-count">
                                     0
@@ -52,7 +55,7 @@
                     </div>
                     <div class="discussion-details">
                         <h3 class="discussion-details-title">
-                            <a class="discussion-details-title-link" href="{{url_for('views.view_discussion', discussion_id=discussion.id)}}">{{discussion.title}}</a>
+                            <a class="discussion-details-title-link" href="{{url_for('views.discussion_details', discussion_id=discussion.id)}}">{{discussion.title}}</a>
                         </h3>
                         <div class="discussion-details-info">
                             <div class="discussion-details-tags">
@@ -84,7 +87,7 @@
                 <div class="answer">
                     <div class="discussion">
                         <div class="discussion-statistics">
-                            <a class="discussion-statistics-item-link" href="{{url_for('views.view_discussion', discussion_id=discussion.id)}}">
+                            <a class="discussion-statistics-item-link" href="{{url_for('views.discussion_details', discussion_id=discussion.id)}}">
                                 <div class="discussion-statistics-item">
                                     <div class="discussion-statistics-count">
                                         {{discussion.grade}}
@@ -94,7 +97,7 @@
                                     </div>
                                 </div>
                             </a>
-                            <a class="discussion-statistics-item-link" href="{{url_for('views.view_discussion', discussion_id=discussion.id)}}">
+                            <a class="discussion-statistics-item-link" href="{{url_for('views.discussion_details', discussion_id=discussion.id)}}">
                                 <div class="discussion-statistics-item">
                                     <div class="discussion-statistics-count">
                                         {{discussion.answers | count}}
@@ -104,7 +107,7 @@
                                     </div>
                                 </div>
                             </a>
-                            <a class="discussion-statistics-item-link" href="{{url_for('views.view_discussion', discussion_id=discussion.id)}}">
+                            <a class="discussion-statistics-item-link" href="{{url_for('views.discussion_details', discussion_id=discussion.id)}}">
                                 <div class="discussion-statistics-item">
                                     <div class="discussion-statistics-count">
                                         0
@@ -117,7 +120,7 @@
                         </div> <!-- /."discussion-statistics -->
                         <div class="discussion-details">
                             <h3 class="discussion-details-title">
-                                <a class="discussion-details-title-link" href="{{url_for('views.view_discussion', discussion_id=discussion.id)}}">
+                                <a class="discussion-details-title-link" href="{{url_for('views.discussion_details', discussion_id=discussion.id)}}">
 									{{discussion.title}}
 								</a>
                             </h3>
@@ -186,7 +189,7 @@
 			{% for discussion in discussions_for_user_commentaries %}
 				<div class="discussion">
 					<div class="discussion-statistics">
-						<a class="discussion-statistics-item-link" href="{{url_for('views.view_discussion', discussion_id=discussion.id)}}">
+						<a class="discussion-statistics-item-link" href="{{url_for('views.discussion_details', discussion_id=discussion.id)}}">
 							<div class="discussion-statistics-item">
 								<div class="discussion-statistics-count">
 									{{discussion.grade}}
@@ -196,7 +199,7 @@
 								</div>
 							</div>
 						</a>
-						<a class="discussion-statistics-item-link" href="{{url_for('views.view_discussion', discussion_id=discussion.id)}}">
+						<a class="discussion-statistics-item-link" href="{{url_for('views.discussion_details', discussion_id=discussion.id)}}">
 							<div class="discussion-statistics-item">
 								<div class="discussion-statistics-count">
 									{{discussion.answers | count}}
@@ -206,7 +209,7 @@
 								</div>
 							</div>
 						</a>
-						<a class="discussion-statistics-item-link" href="{{url_for('views.view_discussion', discussion_id=discussion.id)}}">
+						<a class="discussion-statistics-item-link" href="{{url_for('views.discussion_details', discussion_id=discussion.id)}}">
 							<div class="discussion-statistics-item">
 								<div class="discussion-statistics-count">
 									0
@@ -219,7 +222,7 @@
 					</div> <!-- /."discussion-statistics -->
 					<div class="discussion-details">
 						<h3 class="discussion-details-title">
-							<a class="discussion-details-title-link" href="{{url_for('views.view_discussion', discussion_id=discussion.id)}}">
+							<a class="discussion-details-title-link" href="{{url_for('views.discussion_details', discussion_id=discussion.id)}}">
 								{{discussion.title}}
 							</a>
 						</h3>
@@ -277,20 +280,22 @@
 					<!-- <tbody> -->
 						<tr class="question_answer-row">
 							<td class="question_answer-data">
-								<svg aria-hidden="true" class="svg-icon iconArrowUpLg" width="36" height="36" viewBox="0 0 36 36" onclick="change_grade(element=this, discussion=false, answer_id='{{answer.id}}', up=true)">
+								<svg aria-hidden="true" class="svg-icon iconArrowUpLg" width="36" height="36" viewBox="0 0 36 36">
 									<path class="change_grade" d="M2 26h32L18 10 2 26Z"></path>
 								</svg>
 
 								<div class="question_answer-grade">{{answer.grade}}</div>
 
-								<svg aria-hidden="true" class="svg-icon iconArrowDownLg" width="36" height="36" viewBox="0 0 36 36" onclick="change_grade(element=this, discussion=false, answer_id='{{answer.id}}', up=false)">
+								<svg aria-hidden="true" class="svg-icon iconArrowDownLg" width="36" height="36" viewBox="0 0 36 36">
 									<path class="change_grade" d="M2 10h32L18 26 2 10Z"></path>
 								</svg>
 
 							</td>
 							<td class="question_answer-data">
 								<div class="question_answer-text">
-									{{ answer.text }}
+                                    <a class="question_answer-text-link" href="{{ url_for('views.discussion_details', discussion_id=answer.discussion.id) }}">
+                                        {{ answer.text }}
+                                    </a>
 								</div>
 								<div class="question_answer-author_data">
 									<div class="question_answer-user">

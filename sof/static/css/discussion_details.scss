@@ -22,7 +22,7 @@ $nickname_font-size: 13px;
     box-shadow: 0px 5px 29px 2px rgba(34, 60, 80, 0.2);
 
     font-family: system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Liberation Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
-    
+
     .content-header{
 
         .discussion-title{
@@ -49,7 +49,7 @@ $nickname_font-size: 13px;
             .question_answer-row{
                 padding: 16px 0px;
                 border-bottom: $border_line;
-                
+
                 .question_answer-data:first-child{
                     width: 52px;
                     padding-right: 16px;
@@ -121,7 +121,7 @@ $nickname_font-size: 13px;
 .datetime{
     font-size: $datetime_font-size;
     margin: auto 0px;
-    padding: auto 0px; 
+    padding: auto 0px;
 }
 
 .user-link{

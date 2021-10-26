@@ -17,7 +17,7 @@ $nickname_font-size: 13px;
     .question_answer-row{
         padding: 16px 0px;
         border-bottom: $border_line;
-        
+
         .question_answer-data:first-child{
             width: 52px;
             padding-right: 16px;
@@ -46,6 +46,11 @@ $nickname_font-size: 13px;
 
             .question_answer-text{
                 font-size: $question_font-size;
+                .question_answer-text-link{
+                    text-decoration: none;
+                    color: $black700;
+                }
+
             }
 
             .question_answer-author_data{
@@ -60,5 +65,46 @@ $nickname_font-size: 13px;
 
             }
         }
+    }
+}
+
+.commentaries {
+    .commentary-row {
+        border-bottom: $border_line;
+
+        .commentary-data:first-child {
+            width: 18px;
+            font-size: $commentary_font-size;
+        }
+
+        .commentary-data:last-child {
+            padding: 6px;
+
+            .commentary {
+                word-wrap: break-word;
+                vertical-align: baseline;
+                text-align: -webkit-match-parent;
+                display: flex;
+
+                .commentary-text {
+                    font-size: $commentary_font-size;
+                }
+
+                .commentary-author_data {
+
+                    .commentary-datetime {
+                        margin-left: 10px;
+
+                        .question_answer-edited-datetime {
+                            margin: 0px 10px;
+                        }
+                    }
+
+                }
+            }
+        }
+    }
+    .commentary-row:last-child{
+        border-bottom: none;
     }
 }
