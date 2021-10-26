@@ -3,12 +3,14 @@ from flask_login import LoginManager
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 
+from config import DB_USER, DB_PASSWORD, SECRET_KEY
+
 
 app = Flask(__name__, template_folder='templates', static_folder='static')
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://mapc:mapc@localhost/sof'
+app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://{DB_USER}:{DB_PASSWORD}@localhost/sof'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 app.config['DEBUG'] = True
-app.config['SECRET_KEY'] = 'super secret key'
+app.config['SECRET_KEY'] = SECRET_KEY
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
