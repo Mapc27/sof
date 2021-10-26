@@ -1,14 +1,9 @@
 from datetime import datetime
 
 from flask_login import UserMixin
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy.ext.declarative import declarative_base
 
 from sof import db
 
-# db = SQLAlchemy()
-
-# Base = declarative_base()
 
 association_discussion_tag_table = db.Table('discussion_tag',
                                             db.Column('discussion_id', db.ForeignKey('discussions.id'), primary_key=True),
@@ -19,17 +14,6 @@ association_user_tag_table = db.Table('user_tag',
                                       db.Column('user_id', db.ForeignKey('users.id'), primary_key=True),
                                       db.Column('tag_id', db.ForeignKey('tags.id'), primary_key=True)
                                       )
-
-
-# class BaseModel(Base):
-#     __abstract__ = True
-#
-#     id = db.Column(db.Integer, unique=True, autoincrement=True, nullable=False, primary_key=True)
-#     created_at = db.Column(db.DateTime, nullable=False, default=datetime.now())
-#     updated_at = db.Column(db.DateTime, nullable=False, default=datetime.now())
-#
-#     def __repr__(self):
-#         return "<{0.__class__.__name__}(id={0.id!r})>".format(self)
 
 
 class User(UserMixin, db.Model):
