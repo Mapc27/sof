@@ -13,11 +13,27 @@
   margin-bottom: 8px;
 }
 
-.content .content-header .discussion-title .discussion-title-link {
+.content .content-header .content-header-title-button {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.content .content-header .content-header-title-button .discussion-title .discussion-title-link {
   font-size: 27px;
   text-decoration: none;
   color: #3b4045;
   font-weight: 700;
+}
+
+.content .content-header .content-header-title-button .content-header-ask-question {
+  padding: auto;
 }
 
 .content .content-header .discussion-asked {

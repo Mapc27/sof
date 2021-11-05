@@ -1,13 +1,13 @@
 {% extends 'base.html' %} {% block title %}
-<title>New Question</title>
+<title>Edit Question</title>
 <link
 	rel="stylesheet"
 	href="{{ url_for('static', filename='css/login_register.css') }}"
 />
 {% endblock %} {% block content %}
 <div class="form-content">
-	<form class="question-form" action="{{url_for('views.add_discussion')}}" method="POST">
-		<h5 class="form-title">New Question</h5>
+	<form class="question-form" action="{{ request.url }}" method="POST">
+		<h5 class="form-title">Edit</h5>
 
 		<!-- <div class="errors">
 			{% if question_error %}
@@ -29,7 +29,7 @@
 			<textarea class="form-control" rows="3" name="text">{{ default_text }}</textarea>
 		</div>
 
-		<button type="submit" class="btn btn-primary">Add Question</button>
+		<button type="submit" class="btn btn-primary">Save</button>
 	</form>
 </div>
 

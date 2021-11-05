@@ -6,8 +6,8 @@ from sof.auth import save_session_data
 from sof.serializers import answer_serializer, commentary_serializer
 from sof.services import create_commentary, create_answer, change_discussion_grade_, change_answer_grade_, \
     clear_session, create_discussion, get_answers_by_commentaries_user_id, get_discussions_by_commentaries_user_id, \
-    get_discussions_by_answers_user_id, get_answer_grades_for_user, get_discussion_grades_for_user, password_validation, \
-    nickname_validation, edit_user_
+    get_discussions_by_answers_user_id, get_answer_grades_for_user, get_discussion_grades_for_user, \
+    password_validation, nickname_validation, edit_user_, edit_discussion_
 
 views = Blueprint('views', __name__)
 
@@ -23,8 +23,8 @@ def index():
     return redirect(url_for("views.discussions_list"))
 
 
-@login_required
 @views.route('/users/<int:user_id>', methods=['GET'])
+@login_required
 def view_user(user_id):
     if request.method == 'POST':
         pass
@@ -41,8 +41,8 @@ def view_user(user_id):
                            user=user)
 
 
-@login_required
 @views.route('/users/<int:user_id>/edit', methods=['GET', 'POST'])
+@login_required
 def edit_user(user_id):
     user = User.query.filter_by(id=session['user']['id']).first()
     if request.method == 'POST':
@@ -85,8 +85,12 @@ def discussions_list():
 def discussion_details(discussion_id):
     discussion = Discussion.query.filter_by(id=discussion_id).first()
     if discussion:
-        discussion_grade_dict = get_discussion_grades_for_user(user_id=session['user']['id'])
-        answer_grade_dict = get_answer_grades_for_user(user_id=session['user']['id'])
+        if session['user']['id'] is False:
+            discussion_grade_dict = {}
+            answer_grade_dict = {}
+        else:
+            discussion_grade_dict = get_discussion_grades_for_user(user_id=session['user']['id'])
+            answer_grade_dict = get_answer_grades_for_user(user_id=session['user']['id'])
 
         return render_template('discussion_details.html',
                                discussion=discussion,
@@ -96,28 +100,28 @@ def discussion_details(discussion_id):
     return redirect(url_for('views.index'))
 
 
-@login_required
 @views.route('/questions/new_question', methods=['GET', 'POST'])
+@login_required
 def add_discussion():
     if request.method == 'POST':
         title = request.form.get('title')
         text = request.form.get('text')
         user_id = session['user']['id']
         discussion = create_discussion(title, text, user_id)
-        return redirect(url_for('views.view_discussion', discussion_id=discussion.id))
+        return redirect(url_for('views.discussion_details', discussion_id=discussion.id))
     return render_template('new_discussion.html')
 
 
-@login_required
 @views.route('/questions/<int:discussion_id>/new_answer', methods=['POST'])
+@login_required
 def add_answer(discussion_id):
     answer_text = request.values.get('text')
     answer = create_answer(answer_text=answer_text, user_id=session['user']['id'], discussion_id=discussion_id)
     return answer_serializer(answer), 200
 
 
-@login_required
 @views.route('/questions/<int:discussion_id>/new_comment', methods=['POST'])
+@login_required
 def add_discussion_commentary(discussion_id):
     commentary_text = request.values.get('text')
     commentary = create_commentary(
@@ -128,33 +132,40 @@ def add_discussion_commentary(discussion_id):
     return commentary_serializer(commentary), 200
 
 
-@login_required
 @views.route('/questions/<int:discussion_id>/answer/<int:answer_id>/new_comment', methods=['POST'])
+@login_required
 def add_answer_commentary(discussion_id, answer_id):
     commentary_text = request.values.get('text')
     commentary = create_commentary(commentary_text=commentary_text, answer_id=answer_id, user_id=session['user']['id'])
     return commentary_serializer(commentary), 200
 
 
+@views.route('/questions/<int:discussion_id>/edit', methods=['GET', 'POST'])
 @login_required
-@views.route('/questions/<int:discussion_id>/edit')
-def edit_discussion(user_id, discussion_id):
-    """
-    Не работает
-    """
-    pass
+def edit_discussion(discussion_id):
+    discussion = Discussion.query.filter_by(id=discussion_id).first()
+    if discussion.user_id != session['user']['id']:
+        return redirect(url_for('views.discussion_details', discussion_id=discussion_id))
+
+    if request.method == 'POST':
+        title = request.form.get('title')
+        text = request.form.get('text')
+        discussion = edit_discussion_(title, text, discussion)
+        return redirect(url_for('views.discussion_details', discussion_id=discussion.id))
+
+    return render_template('edit_discussion.html', default_title=discussion.title, default_text=discussion.text)
 
 
-@login_required
 @views.route('/questions/<int:discussion_id>/change_grade', methods=['POST'])
+@login_required
 def change_discussion_grade(discussion_id):
     up = request.values.get('up') == 'true'
     grade = change_discussion_grade_(discussion_id, user_id=session['user']['id'], up=up)
     return {"grade": grade}, "200"
 
 
-@login_required
 @views.route('/questions/<int:discussion_id>/answer/<int:answer_id>/change_grade', methods=['POST'])
+@login_required
 def change_answer_grade(discussion_id, answer_id):
     up = request.values.get('up') == 'true'
     grade = change_answer_grade_(answer_id, user_id=session['user']['id'], up=up)

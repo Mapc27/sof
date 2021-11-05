@@ -10,9 +10,19 @@
 {% block content %}
     <div class="content">
         <div class="content-header">
-            <h1 class="discussion-title">
-                <a href="{{request.url}}" class="discussion-title-link">{{ discussion.title }}</a>
-            </h1>
+            <div class="content-header-title-button">
+                <h1 class="discussion-title">
+                    <a href="{{request.url}}" class="discussion-title-link">{{ discussion.title }}</a>
+                </h1>
+                {% if session['user'] %}
+                    {% if discussion.user_id == session['user']['id'] %}
+                        <div class="content-header-ask-question">
+                            <a href="{{url_for('views.edit_discussion', discussion_id=discussion.id)}}" class="btn btn-primary">Edit</a>
+                        </div>
+                    {% endif %}
+                {% endif %}
+            </div>
+
             <div class="discussion-asked datetime">
                 Created at {{ discussion.created_at.strftime('%d.%m.%Y %H:%M') }}
             </div>

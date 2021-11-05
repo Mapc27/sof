@@ -24,16 +24,26 @@ $nickname_font-size: 13px;
     font-family: system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Liberation Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
 
     .content-header{
+        .content-header-title-button{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
 
-        .discussion-title{
-            .discussion-title-link{
-                font-size: 27px;
-                text-decoration: none;
-                color: $black700;
-                font-weight: 700;
+            .discussion-title{
+                .discussion-title-link{
+                    font-size: 27px;
+                    text-decoration: none;
+                    color: $black700;
+                    font-weight: 700;
+                }
+
             }
 
+            .content-header-ask-question{
+                padding: auto;
+            }
         }
+        
         .discussion-asked{
             padding: 8px 0px;
         }
