@@ -26,8 +26,6 @@ def index():
 @views.route('/users/<int:user_id>', methods=['GET'])
 @login_required
 def view_user(user_id):
-    if request.method == 'POST':
-        pass
     user = User.query.filter_by(id=user_id).first()
     discussions = Discussion.query.filter_by(user_id=user_id)
     discussions_for_user_answers = get_discussions_by_answers_user_id(user_id=user_id)
@@ -85,7 +83,7 @@ def discussions_list():
 def discussion_details(discussion_id):
     discussion = Discussion.query.filter_by(id=discussion_id).first()
     if discussion:
-        if session['user']['id'] is False:
+        if not session['user']['id']:
             discussion_grade_dict = {}
             answer_grade_dict = {}
         else:

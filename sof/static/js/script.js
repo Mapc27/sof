@@ -132,8 +132,6 @@ function change_grade(element, discussion = false, answer_id = null, up = false)
     }
 
     else {
-        arrow.classList.add("pressed")
-
         other_arrow = element.parentNode.getElementsByClassName("change_grade")
         if (other_arrow[0] === arrow){
             other_arrow = other_arrow[1]
@@ -165,6 +163,7 @@ function change_grade(element, discussion = false, answer_id = null, up = false)
         type: "POST",
         data: data,
         success: function (response_dict) {
+            arrow.classList.add("pressed")
             grade = response_dict['grade']
             if (grade != null){
                 element.parentNode.getElementsByClassName("question_answer-grade")[0].innerHTML = grade
