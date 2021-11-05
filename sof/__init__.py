@@ -18,7 +18,8 @@ migrate = Migrate(app, db)
 from sof.models import User, Tag, Discussion, Commentary, Answer
 
 login_manager = LoginManager()
-login_manager.login_view = 'auth.login'
+login_manager.login_message = u"Need to login"
+login_manager.login_message_category = "info"
 login_manager.init_app(app)
 
 
