@@ -62,4 +62,42 @@
 .question_answer .question_answer-row .question_answer-data:last-child .question_answer-author_data .question_answer-datetime {
   margin-left: 10px;
 }
+
+.commentaries .commentary-row {
+  border-bottom: 1px solid #e3e6e8;
+}
+
+.commentaries .commentary-row .commentary-data:first-child {
+  width: 18px;
+  font-size: 13px;
+}
+
+.commentaries .commentary-row .commentary-data:last-child {
+  padding: 6px;
+}
+
+.commentaries .commentary-row .commentary-data:last-child .commentary {
+  word-wrap: break-word;
+  vertical-align: baseline;
+  text-align: -webkit-match-parent;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.commentaries .commentary-row .commentary-data:last-child .commentary .commentary-text {
+  font-size: 13px;
+}
+
+.commentaries .commentary-row .commentary-data:last-child .commentary .commentary-author_data .commentary-datetime {
+  margin-left: 10px;
+}
+
+.commentaries .commentary-row .commentary-data:last-child .commentary .commentary-author_data .commentary-datetime .question_answer-edited-datetime {
+  margin: 0px 10px;
+}
+
+.commentaries .commentary-row:last-child {
+  border-bottom: none;
+}
 /*# sourceMappingURL=user_page.css.map */
