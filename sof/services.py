@@ -69,6 +69,13 @@ def create_discussion(title, text, user_id):
     return discussion
 
 
+def edit_discussion_(title, text, discussion):
+    discussion.title = title
+    discussion.text = text
+    db.session.commit()
+    return discussion
+
+
 def create_answer(answer_text, user_id, discussion_id):
     answer = Answer(text=answer_text, discussion_id=discussion_id, user_id=user_id)
     db.session.add(answer)
